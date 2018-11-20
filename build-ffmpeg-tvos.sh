@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # directories
-SOURCE="ffmpeg-3.1.1"
+SOURCE="ffmpeg-4.0.2"
 FAT="FFmpeg-tvOS"
 
 SCRATCH="scratch-tvos"
@@ -29,12 +29,32 @@ fi
 # avresample
 #CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-avresample"
 
+CONFIGURE_FLAGS="$CONFIGURE_FLAGS --disable-encoders --disable-decoders --disable-hwaccels"
+
+DECODERS="aac_latm dca png apng bmp mjpeg thp gif vp8 vp9 dirac ffv1 ffvhuff huffyuv rawvideo zero12v ayuv r210 v210 v210x v308 v408 v410 y41p yuv4 ansi flac vorbis opus pcm_f32be pcm_f32le pcm_f64be pcm_f64le pcm_lxf pcm_s16be pcm_s16be_planar pcm_s16le pcm_s16le_planar pcm_s24be pcm_s24le pcm_s24le_planar pcm_s32be pcm_s32le pcm_s32le_planar pcm_s8 pcm_s8_planar pcm_u16be pcm_u16le pcm_u24be pcm_u24le pcm_u32be pcm_u32le pcm_u8 pcm_alaw pcm_mulaw ass dvbsub dvdsub ccaption pgssub jacosub microdvd movtext mpl2 pjs realtext sami ssa stl subrip subviewer subviewer1 text vplayer webvtt xsub aac_at alac_at ac3_at eac3_at mp1_at mp2_at mp3_at"
+
+for DECODER in $(echo $DECODERS | tr " " "\n"); do
+	CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-decoder=$DECODER"
+done
+
+# ENCODERS="flac alac libvorbis libopus mjpeg wrapped_avframe ass dvbsub dvdsub movtext ssa subrip text webvtt xsub pcm_f32be pcm_f32le pcm_f64be pcm_f64le pcm_s8 pcm_s8_planar pcm_s16be pcm_s16be_planar pcm_s16le pcm_s16le_planar pcm_s24be pcm_s24le pcm_s24le_planar pcm_s32be pcm_s32le pcm_s32le_planar pcm_u8 pcm_u16be pcm_u16le pcm_u24be pcm_u24le pcm_u32be pcm_u32le aac_at"
+
+# for ENCODER in $(echo $ENCODERS | tr " " "\n"); do
+# 	CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-encoder=$ENCODER"
+# done
+
+HWACCELS="h263_videotoolbox mpeg1_videotoolbox h264_videotoolbox mpeg2_videotoolbox hevc_videotoolbox mpeg4_videotoolbox"
+
+for HWACCEL in $(echo $HWACCELS | tr " " "\n"); do
+	CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-hwaccel=$HWACCEL"
+done
+
 ARCHS="arm64 x86_64"
 
 COMPILE="y"
 LIPO="y"
 
-DEPLOYMENT_TARGET="9.0"
+DEPLOYMENT_TARGET="11.0"
 
 if [ "$*" ]
 then
