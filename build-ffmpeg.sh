@@ -5,7 +5,7 @@ FF_VERSION="4.0.2"
 if [[ $FFMPEG_VERSION != "" ]]; then
   FF_VERSION=$FFMPEG_VERSION
 fi
-SOURCE="v1.5"
+SOURCE="plex-apple"
 FAT="FFmpeg-iOS"
 
 SCRATCH="scratch"
